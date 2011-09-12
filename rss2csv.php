@@ -17,7 +17,7 @@ $convert = ($url <> '') ? true : false;
 
 if ($convert) {
     // fetch RSS content using YQL and output as CSV
-    error_log (date(DATE_ISO8601) . "  $url\n",3,"/usr/home/bcantoni/public_html/scooterlabs/hacks/log/rss2csv.log");
+    error_log (date(DATE_ISO8601) . "  $url\n",3,"./log/rss2csv.log");
     fetchRSSandOutputCSV ($url);
     exit();
 }
@@ -49,9 +49,10 @@ if ($convert) {
 
 <p>Notes:</p>
 <ul>
-<li>Excel does not properly handle UTF-8 CSV files, so you may see some corruption if the RSS feed contains intl characters</li>
+<li>Excel does not properly handle UTF-8 CSV files, so you may see some corruption if the RSS feed contains international characters</li>
 <li>Fields output are: title, link, description, pubDate, guid</li>
-<li>Only works for RSS feeds; if interested in Atom support, let me know</li>
+<li>Only RSS feeds are supported - not Atom; if interested in Atom support, let me know</li>
+<li>Also see the original blog post for more background: <a href="http://www.cantoni.org/2009/12/22/rss-to-csv-converter" title="RSS to CSV converter">RSS to CSV Converter</a></li>
 </ul>
 
 <div id="ft"><hr><p>Feedback/suggestions to Brian Cantoni (brian AT cantoni.org).</p></div>
