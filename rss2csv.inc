@@ -26,6 +26,12 @@ function fetchRSSandOutputCSV ($url) {
     header('Pragma: no-cache');
     header('Expires: 0');
 
+    $count = $result->{'query'}->{'count'};
+    if ($count == 0) {
+        print "No data returned for RSS feed\n";
+        return;
+    }
+
     // save values from first items (to use as column headers)
     $headers = array();
     foreach ($items[0] as $k => $v) {
