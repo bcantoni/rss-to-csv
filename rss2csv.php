@@ -41,7 +41,7 @@ if ($convert) {
 
 <form id="search-form" action="rss2csv.php" method="get">
   <fieldset>
-    <label for="query">Enter URL of CSV file:</label>
+    <label for="query">Enter URL of RSS feed:</label>
     <input type="text" id="query" name="url" size="50" value="<?php echo $url; ?>" />
     <button type="submit">Submit</button>
   </fieldset>
