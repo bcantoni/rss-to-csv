@@ -25,3 +25,7 @@ To run your own copy of this script:
 1. The script can handle UTF-8 in the source file, but Excel cannot (CSV files don't technically support Unicode)
 2. Only RSS feeds are supported; it won't work with an Atom feed
 
+# License
+
+Licensed under the MIT License.
+
