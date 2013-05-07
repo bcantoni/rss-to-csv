@@ -2,7 +2,7 @@
 /* rss2csv.php - convert RSS feed to CSV format
 
    Created by Brian Cantoni <brian AT cantoni.org>
-   scooterlabs.com/hacks/rss2csv.php
+   http://scooterlabs.com/hacks/rss2csv.php
 */
 if ($_SERVER['REQUEST_METHOD'] != 'GET') {
     header ('Allow: GET');
@@ -53,6 +53,7 @@ if ($convert) {
 <li>Fields output are: title, link, description, pubDate, guid</li>
 <li>Only RSS feeds are supported - not Atom; if interested in Atom support, let me know</li>
 <li>Also see the original blog post for more background: <a href="http://www.cantoni.org/2009/12/22/rss-to-csv-converter" title="RSS to CSV converter">RSS to CSV Converter</a></li>
+<li>Source code available on Github: <a href="https://github.com/bcantoni/rss-to-csv">https://github.com/bcantoni/rss-to-csv</a></li>
 </ul>
 
 <div id="ft"><hr><p>Feedback/suggestions to Brian Cantoni (brian AT cantoni.org).</p></div>
