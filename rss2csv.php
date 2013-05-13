@@ -22,14 +22,14 @@ if ($convert) {
     exit();
 }
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
     <title>RSS to CSV Converter - Scooter Labs</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/reset-fonts-grids/reset-fonts-grids.css&2.8.0r4/build/base/base-min.css">
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/reset-fonts-grids/reset-fonts-grids.css&amp;2.8.0r4/build/base/base-min.css">
     <style>
-        h1 { font-size: 2em; margin: 0.5em; }
+        h1 { font-size: 2em; margin: 0.5em 0.5em 0.5em 0; }
         body { overflow: auto; }
     </style>
 </head>
@@ -38,7 +38,7 @@ if ($convert) {
 <div id="hd"><h1>RSS to CSV Converter</h1></div>
 <div id="bd">
 <div class="yui-g">
-
+<p>This is a simple script to convert RSS feeds into CSV format, suitable for importing into Excel.</p>
 <form id="search-form" action="rss2csv.php" method="get">
   <fieldset>
     <label for="query">Enter URL of RSS feed:</label>
@@ -52,14 +52,15 @@ if ($convert) {
 <li>Excel does not properly handle UTF-8 CSV files, so you may see some corruption if the RSS feed contains international characters</li>
 <li>Fields output are: title, link, description, pubDate, guid</li>
 <li>Only RSS feeds are supported - not Atom; if interested in Atom support, let me know</li>
-<li>Also see the original blog post for more background: <a href="http://www.cantoni.org/2009/12/22/rss-to-csv-converter" title="RSS to CSV converter">RSS to CSV Converter</a></li>
+<li>Original blog post: <a href="http://www.cantoni.org/2009/12/22/rss-to-csv-converter" title="RSS to CSV converter">RSS to CSV Converter</a></li>
 <li>Source code available on Github: <a href="https://github.com/bcantoni/rss-to-csv">https://github.com/bcantoni/rss-to-csv</a></li>
 </ul>
 
-<div id="ft"><hr><p>Feedback/suggestions to Brian Cantoni (brian AT cantoni.org).</p></div>
+<div id="ft"><hr><p>Feedback/suggestions to Brian Cantoni (<span class="hideEmail">brian AT cantoni.org</span>).</p></div>
 
 </div>
 </div>
 </div>
+<script src="/scooterlabs.js"></script>
 </body>
 </html>
