@@ -61,6 +61,6 @@ if ($convert) {
 </div>
 </div>
 </div>
-<script src="/scooterlabs.js"></script>
+<script src="/javascript/scooterlabs-min.js"></script>
 </body>
 </html>
