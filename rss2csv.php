@@ -27,6 +27,7 @@ if ($convert) {
 <head>
     <title>RSS to CSV Converter - Scooter Labs</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name=viewport content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/reset-fonts-grids/reset-fonts-grids.css&amp;2.8.0r4/build/base/base-min.css">
     <style>
         h1 { font-size: 2em; margin: 0.5em 0.5em 0.5em 0; }
