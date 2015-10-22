@@ -5,6 +5,10 @@
    scooterlabs.com/hacks/rss2csv.php
 */
 
+// max cell size for benefit of MS Excel
+// ref: https://support.office.com/en-us/article/Excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3
+define ('MAX_CELL_SIZE', 32000);
+
 // given RSS feed URL, fetch it using YQL, then output as CSV
 function fetchRSSandOutputCSV ($url) {
     $yqlBase = "http://query.yahooapis.com/v1/public/yql";
@@ -45,8 +49,8 @@ function fetchRSSandOutputCSV ($url) {
         foreach ($items as $item) {
             $values = Array();
             foreach ($item as $k => $v) {
-                if (is_scalar($v)) { // don't write out objects or arrays
-                    $values[] = $v;
+                if (is_scalar($v)) { // only write out scalars (skip objects, arrays, etc.)
+                    $values[] = substr($v, 0, MAX_CELL_SIZE);
                 } else {
                     $values[] = '';
                 }
