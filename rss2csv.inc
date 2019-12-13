@@ -11,52 +11,52 @@ define ('MAX_CELL_SIZE', 32000);
 
 // given RSS feed URL, fetch it using YQL, then output as CSV
 function fetchRSSandOutputCSV ($url) {
-    $yqlBase = "http://query.yahooapis.com/v1/public/yql";
-    $query = "select title,link,description,pubDate,guid from rss where url='$url'";
-    $queryUrl = $yqlBase . "?q=" . rawurlencode($query) . "&format=json";
+    if(@simplexml_load_file($url)) {
+        $feeds = simplexml_load_file($url);
+    } else {
+        print "No data returned for RSS feed\n";
+        return;
+    }
 
-    $curl = curl_init($queryUrl);
-    curl_setopt($curl, CURLOPT_HEADER, false);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    $json = curl_exec($curl);
-
-    curl_close($curl);
-    $result = json_decode($json);
-
-    $items = $result->{'query'}->{'results'}->{'item'};
+    /*
+    foreach ($feeds->channel->item as $item) {
+        foreach ($item as $key => $value) {
+            print "$key => $value\n";
+        }
+        print "-----------------\n";
+    }
+    */
 
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename="export.csv"');
     header('Pragma: no-cache');
     header('Expires: 0');
 
-    $count = $result->{'query'}->{'count'};
-    if ($count == 0) {
-        print "No data returned for RSS feed\n";
-        return;
-    }
-
     // save values from first items (to use as column headers)
     $headers = array();
-    foreach ($items[0] as $k => $v) {
-        $headers[] = $k;
+    foreach ($feeds->channel->item[0] as $k => $v) {
+        // todo: properly handle >1 category problem
+        if (!preg_match('/category/', $k)) {
+            $headers[] = $k;
+        }
     }
 
     // open stdout and write headers, then data, as CSV
     $fp = fopen('php://output', 'w');
-    if ($fp && $result) {
+    if ($fp) {
         fputcsv($fp, $headers);
-        foreach ($items as $item) {
+        foreach ($feeds->channel->item as $item) {
             $values = Array();
             foreach ($item as $k => $v) {
-                if (is_scalar($v)) { // only write out scalars (skip objects, arrays, etc.)
+                // todo: properly handle >1 category problem
+                if (!preg_match('/category/', $k)) {
                     $values[] = substr($v, 0, MAX_CELL_SIZE);
-                } else {
-                    $values[] = '';
                 }
             }
             fputcsv($fp, $values);
         }
     }
+
     return;
 }
+
