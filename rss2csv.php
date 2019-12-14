@@ -19,6 +19,9 @@ if ($convert) {
     // fetch RSS content using YQL and output as CSV
     error_log (date(DATE_ISO8601) . "  $url\n",3,"./log/rss2csv.log");
     fetchRSSandOutputCSV ($url);
+    if (file_exists("./slack.sh")) {
+        $output = shell_exec("./slack.sh $url");
+    }
     exit();
 }
 ?>
