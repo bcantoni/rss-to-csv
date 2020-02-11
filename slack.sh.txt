@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+WEBHOOK=https://hooks.slack.com/services/REPLACE-WITH-YOUR-SLACK-HOOK
+PAYLOAD="{\"text\": \"$1\"}"
+curl --silent X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$WEBHOOK"
