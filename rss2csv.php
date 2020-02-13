@@ -9,21 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] != 'GET') {
     header ('HTTP/1.0 405 Method Not Allowed');
     exit();
 }
-
-include ("./rss2csv.inc");
-
-$url = isset($_GET['url']) ? $_GET['url'] : '';
-$convert = ($url <> '') ? true : false;
-
-if ($convert) {
-    // fetch RSS content using YQL and output as CSV
-    error_log (date(DATE_ISO8601) . "  $url\n",3,"./log/rss2csv.log");
-    fetchRSSandOutputCSV ($url);
-    if (file_exists("./slack.sh")) {
-        $output = shell_exec("./slack.sh $url");
-    }
-    exit();
-}
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -43,16 +28,17 @@ if ($convert) {
 <div id="bd">
 <div class="yui-g">
 <p>This is a simple script to convert RSS feeds into CSV format, suitable for importing into Excel.</p>
-<form id="search-form" action="rss2csv.php" method="get">
+<form id="search-form" action="https://gatos-jabra-buster.azurewebsites.net/api/RssToCsv" method="get">
   <fieldset>
     <label for="query">Enter URL of RSS feed:</label>
-    <input type="text" id="query" name="url" size="50" value="<?php echo $url; ?>" />
+    <input type="text" id="query" name="url" size="50" />
     <button type="submit">Submit</button>
   </fieldset>
 </form>
 
 <p>Notes:</p>
 <ul>
+<li><strong>Feb 2020 update:</strong> To fix some issues with my old host, I've changed the backend from PHP to Python which is now running on Azure Functions. Everything should still work as before.</li>
 <li>Excel does not properly handle UTF-8 CSV files, so you may see some corruption if the RSS feed contains international characters</li>
 <li>Fields output are: title, link, description, pubDate, guid</li>
 <li>Only RSS feeds are supported - not Atom; if interested in Atom support, let me know</li>

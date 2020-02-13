@@ -1,0 +1,3 @@
+azure-functions
+feedparser
+requests

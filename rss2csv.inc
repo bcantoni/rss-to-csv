@@ -9,7 +9,7 @@
 // ref: https://support.office.com/en-us/article/Excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3
 define ('MAX_CELL_SIZE', 32000);
 
-// given RSS feed URL, fetch it using YQL, then output as CSV
+// fetch RSS feed, output to CSV format on stdout, and return number of items found
 function fetchRSSandOutputCSV ($url) {
     if(@simplexml_load_file($url)) {
         $feeds = simplexml_load_file($url);
@@ -42,6 +42,7 @@ function fetchRSSandOutputCSV ($url) {
     }
 
     // open stdout and write headers, then data, as CSV
+    $count = 0;
     $fp = fopen('php://output', 'w');
     if ($fp) {
         fputcsv($fp, $headers);
@@ -54,9 +55,9 @@ function fetchRSSandOutputCSV ($url) {
                 }
             }
             fputcsv($fp, $values);
+            $count++;
         }
     }
 
-    return;
+    return($count);
 }
-
