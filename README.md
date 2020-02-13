@@ -4,15 +4,15 @@ This is a simple script to convert RSS feeds into CSV format,
 suitable for importing into Excel.
 
 See this original blog post for more background and instructions:
-http://www.cantoni.org/2009/12/22/rss-to-csv-converter
+<http://www.cantoni.org/2009/12/22/rss-to-csv-converter>
 
-# Usage
+## Usage
 
-1. Browse to http://scooterlabs.com/hacks/rss2csv.php
+1. Browse to <http://scooterlabs.com/hacks/rss2csv.php>
 2. Enter the URL of an RSS feed and submit
-2. Save the resulting file (named `export.csv` by default)
+3. Save the resulting file (named `export.csv` by default)
 
-# Installation
+## Installation
 
 To run your own copy of this script:
 
@@ -20,13 +20,12 @@ To run your own copy of this script:
 2. Create a subdirectory `logs` that is writeable by the webserver process (e.g., `mkdir logs; chmod 777 logs`)
 3. Browse to rss2csv.php and give it a try!
 
-# Limitations
+## Limitations
 
 1. The script can handle UTF-8 in the source file, but Excel cannot (CSV files don't technically support Unicode)
 2. Only RSS feeds are supported; it won't work with an Atom feed
 3. Data fields are limited (truncated) to 32,000 characters to avoid hitting Excel's cell size limitation
 
-# License
+## License
 
 Licensed under the MIT License.
-
