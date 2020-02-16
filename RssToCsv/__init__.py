@@ -62,11 +62,18 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             url = req_body.get('url')
 
     if url:
+        logging.info(f'Calling fetchRSSandOutputCSV for url: {url}')
         rc = fetchRSSandOutputCSV(url)
         if 'SLACK_WEBHOOK' in os.environ:
             # if configured send update to Slack room
-            logging.info('Posted to Slack')
-            stat = requests.post(os.environ['SLACK_WEBHOOK'], json={'text': url})
+            logging.info('Posting to Slack')
+            slackmsg = f"feed: {url}\nheaders:\n"
+            for key, value in req.headers.items():
+                slackmsg += f"{key}: {value}\n"
+            stat = requests.post(
+                os.environ['SLACK_WEBHOOK'],
+                json={'text': slackmsg}
+            )
             logging.info(stat.status_code)
         return rc
     else:
