@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 
-scp rss2csv.* cantoni.org:public_html/scooterlabs/hacks
-scp slack.sh cantoni.org:public_html/scooterlabs/hacks
+scp rss2csv.php cantoni.org:public_html/scooterlabs/hacks
