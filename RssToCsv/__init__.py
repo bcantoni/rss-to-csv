@@ -67,9 +67,16 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         if 'SLACK_WEBHOOK' in os.environ:
             # if configured send update to Slack room
             logging.info('Posting to Slack')
-            slackmsg = f"feed: {url}\nheaders:\n"
+            slackmsg = f"feed: {url}\n"
+            interesting = [
+                'client-ip',
+                'x-forwarded-for',
+                'accept-language',
+                'user-agent'
+            ]
             for key, value in req.headers.items():
-                slackmsg += f"{key}: {value}\n"
+                if key in interesting:
+                    slackmsg += f"{key}: {value}\n"
             stat = requests.post(
                 os.environ['SLACK_WEBHOOK'],
                 json={'text': slackmsg}
