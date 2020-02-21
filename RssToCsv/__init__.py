@@ -4,10 +4,25 @@ import feedparser
 import io
 import logging
 import os
+import re
 import requests
 
 
 def fetchRSSandOutputCSV(url):
+    matches = re.search(r"^(\d\d\d)$", url)
+    if matches:
+        statuscode = matches[1]
+        return func.HttpResponse(
+            f"Test mode, returning status {statuscode}\n",
+            status_code=statuscode
+        )
+
+    if not re.search(r"^https?:\/\/", url):
+        return func.HttpResponse(
+             "Invalid 'url' parameter.\n",
+             status_code=400
+        )
+
     rss = feedparser.parse(url)
     if rss.status != 200:
         return func.HttpResponse(
@@ -85,6 +100,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return rc
     else:
         return func.HttpResponse(
-             "Please pass a url on the query string or in the request body",
+             "Please pass 'url' parameter in query request or body.\n",
              status_code=400
         )
