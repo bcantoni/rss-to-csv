@@ -24,7 +24,7 @@ def fetchRSSandOutputCSV(url):
         )
 
     rss = feedparser.parse(url)
-    if rss.status != 200:
+    if rss.status not in [200, 301, 302]:
         return func.HttpResponse(
             f"Error fetching {url}: {rss.status}\n", status_code=400
         )
@@ -33,7 +33,8 @@ def fetchRSSandOutputCSV(url):
     headers = {
         "Content-Type": "text/csv; charset=utf-8",
         "Content-Disposition": "attachment; filename=\"export.csv\"",
-        "Pragma": "no-cache"
+        "Pragma": "no-cache",
+        "URL-Actual": rss.href
     }
     csv_writer = csv.writer(
         output,
