@@ -1,14 +1,45 @@
+'''
+RSS to CSV serverless (Azure functions)
+
+optional environment variables:
+SLACK_WEBHOOK - if present, will send status message to Slack channel
+IPSTACK_ACCESS_KEY - if present, will do geo ip lookup using api.ipstack.com
+'''
+
 import azure.functions as func
 import csv
 import feedparser
 import io
+import json
 import logging
 import os
 import re
 import requests
 
 
+def geoIP(ip):
+    matches = re.search(r"^(\d+\.\d+\.\d+\.\d+):", ip)
+    if matches:
+        ip = matches[1]
+        logging.info(f"geoIP called for {ip}")
+        if 'IPSTACK_ACCESS_KEY' in os.environ:
+            access_key = os.environ['IPSTACK_ACCESS_KEY']
+            url = f"http://api.ipstack.com/{ip}?access_key={access_key}&format=1"
+            req = requests.get(url)
+            if req.status_code != 200:
+                return 'Error looking up IP address'
+            logging.info(req.content.decode('utf-8'))
+            data = json.loads(req.content.decode('utf-8'))
+            msg = f"{data['city']}, {data['region_name']} ({data['country_code']})"
+            return msg
+        else:
+            return ''
+    else:
+        return 'Bad IP address given'
+
+
 def fetchRSSandOutputCSV(url):
+    ''' special test case: provide just an HTTP status code '''
     matches = re.search(r"^(\d\d\d)$", url)
     if matches:
         statuscode = matches[1]
@@ -93,6 +124,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             for key, value in req.headers.items():
                 if key in interesting:
                     slackmsg += f"{key}: {value}\n"
+            if 'x-forwarded-for' in req.headers:
+                ip = req.headers['x-forwarded-for']
+                geo = geoIP(ip)
+                slackmsg += f"Geo: {geo}\n"
             stat = requests.post(
                 os.environ['SLACK_WEBHOOK'],
                 json={'text': slackmsg}
