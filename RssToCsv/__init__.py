@@ -15,6 +15,7 @@ import logging
 import os
 import re
 import requests
+import time
 
 
 def geoIP(ip):
@@ -54,7 +55,10 @@ def fetchRSSandOutputCSV(url):
              status_code=400
         )
 
+    start = time.time()
     rss = feedparser.parse(url)
+    delta = int((time.time() - start) * 1000)
+    logging.info(f"time-feedparser: {delta} ms")
     if rss.status not in [200, 301, 302]:
         return func.HttpResponse(
             f"Error fetching {url}: {rss.status}\n", status_code=400
@@ -125,15 +129,21 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         if 'SLACK_WEBHOOK' in os.environ:
             # if configured send update to Slack room
-            slackmsg = ''
+            slackmsg = f"Feed: {url}\n"
             if 'x-forwarded-for' in req.headers:
                 ip = req.headers['x-forwarded-for']
+                start = time.time()
                 geo = geoIP(ip)
+                delta = int((time.time() - start) * 1000)
+                logging.info(f"time-geoip: {delta} ms")
                 slackmsg += f"Geo: {geo}\n"
+            start = time.time()
             stat = requests.post(
                 os.environ['SLACK_WEBHOOK'],
                 json={'text': slackmsg}
             )
+            delta = int((time.time() - start) * 1000)
+            logging.info(f"time-slack: {delta} ms")
             logging.info(f"Slack post response {stat.status_code}")
         return rc
     else:
