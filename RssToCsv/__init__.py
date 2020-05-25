@@ -40,7 +40,9 @@ def geoIP(ip):
 
 
 def fetchRSSandOutputCSV(url):
-    ''' special test case: provide just an HTTP status code '''
+    ''' fetch the specified RSS feed and return in CSV format '''
+
+    # test mode: if 3-digit "url" provided, return as an HTTP status code
     matches = re.search(r"^(\d\d\d)$", url)
     if matches:
         statuscode = matches[1]
@@ -101,6 +103,8 @@ def fetchRSSandOutputCSV(url):
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
+    ''' main function entry point from Azure '''
+
     logging.info('HTTP trigger function processed a request, calling rss2csv')
 
     url = req.params.get('url')
@@ -127,8 +131,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         rc = fetchRSSandOutputCSV(url)
 
+        # if configured send update to Slack room
         if 'SLACK_WEBHOOK' in os.environ:
-            # if configured send update to Slack room
             slackmsg = f"Feed: {url}\n"
             if 'x-forwarded-for' in req.headers:
                 ip = req.headers['x-forwarded-for']
@@ -144,7 +148,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             )
             delta = int((time.time() - start) * 1000)
             logging.info(f"time-slack: {delta} ms")
-            logging.info(f"Slack post response {stat.status_code}")
+            logging.info(f"response code from Slack: {stat.status_code}")
         return rc
     else:
         return func.HttpResponse(
