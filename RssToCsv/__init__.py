@@ -19,6 +19,7 @@ import time
 
 
 def geoIP(ip):
+    ''' convert IP address into location '''
     matches = re.search(r"^(\d+\.\d+\.\d+\.\d+):", ip)
     if matches:
         ip = matches[1]
