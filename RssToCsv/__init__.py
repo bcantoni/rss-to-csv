@@ -81,10 +81,11 @@ def fetchRSSandOutputCSV(url):
     return func.HttpResponse(result, headers=headers)
 
 
-def main(req: func.HttpRequest) -> func.HttpResponse:
+def main(context: func.Context, req: func.HttpRequest) -> func.HttpResponse:
     ''' main function entry point from Azure '''
 
     logging.info('HTTP trigger function processed a request, calling rss2csv')
+    logging.info(f"invocation_id = {context.invocation_id}")
 
     url = req.params.get('url')
     if not url:
