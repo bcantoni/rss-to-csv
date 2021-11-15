@@ -96,6 +96,7 @@ def main(context: func.Context, req: func.HttpRequest) -> func.HttpResponse:
         else:
             url = req_body.get('url')
 
+    url = url.strip()
     if url:
         logmsg = f"Processing url: {url}\n"
         interesting = [
