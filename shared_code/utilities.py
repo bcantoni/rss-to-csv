@@ -7,6 +7,7 @@ import requests
 
 def geoIP(ip):
     ''' convert IP address into location '''
+    return 'N/A'
     matches = re.search(r"^(\d+\.\d+\.\d+\.\d+):", ip)
     if matches:
         ip = matches[1]
