@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    types: [opened, reopened]
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
